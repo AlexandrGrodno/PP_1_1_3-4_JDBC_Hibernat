@@ -18,9 +18,8 @@ public class Main {
         System.out.println("User с именем "+user2.getName()+" добавлен в базу данных");
         userService.saveUser(user3.getName(),user3.getLastName(),user3.getAge());
         System.out.println("User с именем "+user3.getName()+" добавлен в базу данных");
-        userService.saveUser(user4.getName(),user4.getLastName(),user4.getAge());
+        userService.saveUser(user4.getName(), user4.getLastName(), user4.getAge());
         System.out.println("User с именем "+user4.getName()+" добавлен в базу данных");
-
         System.out.println(userService.getAllUsers());
         userService.cleanUsersTable();
         userService.dropUsersTable();
