@@ -33,7 +33,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void dropUsersTable() {
         try(Session session = faktory.openSession()) {
             session.beginTransaction();
-            session.createSQLQuery("DROP TABLE newschema.user").executeUpdate();
+            session.createSQLQuery("DROP TABLE user").executeUpdate();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -43,9 +43,9 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public void saveUser(String name, String lastName, byte age) {
        try( Session session = faktory.openSession()){
-        Transaction transaction = session.beginTransaction();
+        session.beginTransaction();
         session.save(new User(name,lastName,age));
-        transaction.commit();
+        session.getTransaction().commit();
        } catch (Exception e){
            e.printStackTrace();
        }
@@ -54,9 +54,9 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public void removeUserById(long id) {
         try( Session session = faktory.openSession()){
-            Transaction transaction = session.beginTransaction();
+            session.beginTransaction();
             session.remove(session.get(User.class,id));
-            transaction.commit();
+            session.getTransaction().commit();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -68,8 +68,8 @@ public class UserDaoHibernateImpl implements UserDao {
         List<User> users = new ArrayList<>();
         try(Session session = faktory.openSession()) {
             session.beginTransaction();
-            Query query = session.createQuery("FROM User ", User.class);
-            users = query.getResultList();
+            users = session.createQuery("FROM User ", User.class).getResultList();
+
         } catch (Exception e){
             e.printStackTrace();
         }
