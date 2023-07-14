@@ -33,7 +33,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void dropUsersTable() {
         try(Session session = faktory.openSession()) {
             session.beginTransaction();
-            session.createSQLQuery("DROP TABLE user").executeUpdate();
+            session.createSQLQuery("DROP TABLE IF EXISTS user").executeUpdate();
         } catch (Exception e){
             e.printStackTrace();
         }
