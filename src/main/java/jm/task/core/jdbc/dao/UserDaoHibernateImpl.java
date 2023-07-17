@@ -20,7 +20,8 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void createUsersTable() {
-       try(Session session = faktory.openSession()) {
+        Session session = null;
+        try {session = faktory.openSession();
            session.beginTransaction();
            session.createSQLQuery("CREATE TABLE IF NOT EXISTS user (id INT NOT NULL AUTO_INCREMENT, name" +
                    " VARCHAR(55), lastName VARCHAR(55), age INT(3), PRIMARY KEY (id))").executeUpdate();
@@ -31,7 +32,8 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void dropUsersTable() {
-        try(Session session = faktory.openSession()) {
+        Session session = null;
+        try {session = faktory.openSession();
             session.beginTransaction();
             session.createSQLQuery("DROP TABLE IF EXISTS user").executeUpdate();
         } catch (Exception e){
@@ -42,22 +44,26 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
-       try( Session session = faktory.openSession()){
+        Session session = null;
+        try {session = faktory.openSession();
         session.beginTransaction();
         session.save(new User(name,lastName,age));
         session.getTransaction().commit();
        } catch (Exception e){
+            session.getTransaction().rollback();
            e.printStackTrace();
        }
     }
 
     @Override
     public void removeUserById(long id) {
-        try( Session session = faktory.openSession()){
+        Session session = null;
+        try {session = faktory.openSession();
             session.beginTransaction();
             session.remove(session.get(User.class,id));
             session.getTransaction().commit();
         } catch (Exception e){
+            session.getTransaction().rollback();
             e.printStackTrace();
         }
 
@@ -80,7 +86,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void cleanUsersTable() {
         try(Session session = faktory.openSession()) {
             session.beginTransaction();
-            Query query = session.createQuery("DELETE FROM User ");
+            Query query = session.createSQLQuery("DELETE FROM User ");
             query.executeUpdate();
         } catch (Exception e){
             e.printStackTrace();
